@@ -27,13 +27,13 @@ To get from gitlab via `go get`, this will get source and install dependens(cobr
 install:
 
 ```bash
-go get github.com/newtonproject/tokencommander
+git clone https://github.com/newtonproject/tokencommander.git && cd tokencommander && make install
 ```
 
 run TokenCommander:
 
 ```bash
-%GOPATH%/bin/TokenCommander.exe
+%GOPATH%/bin/tokencommander.exe
 ```
 
 #### Linux or Mac
@@ -41,14 +41,13 @@ run TokenCommander:
 install:
 
 ```bash
-git config --global url."git@gitlab.newtonproject.org:".insteadOf "https://gitlab.newtonproject.org/"
-go get github.com/newtonproject/tokencommander
+git clone https://github.com/newtonproject/tokencommander.git && cd tokencommander && make install
 ```
 
 run TokenCommander:
 
 ```bash
-$GOPATH/bin/TokenCommander
+$GOPATH/bin/tokencommander
 ```
 
 ## Usage
@@ -117,14 +116,14 @@ password = "password"
 
 ```bash
 # Initialize config file
-$ TokenCommander init
+$ tokencommander init
 ```
 
 Just press Enter to use the default configuration, and it's best to create a new user.
 
 
 ```bash
-$ TokenCommander init
+$ tokencommander init
 Initialize config file
 Enter file in which to save (./config.toml):
 Enter the wallet storage directory (./wallet/):
@@ -142,75 +141,75 @@ Your configuration has been saved in  ./config.toml
 
 ```bash
 # Create an account with faucet
-TokenCommander account new --faucet
+tokencommander account new --faucet
 
 # Create 10 accounts
-TokenCommander account new -n 10 --faucet
+tokencommander account new -n 10 --faucet
 
 # Get balance of address on NewChain or Ethereum
-TokenCommander account balance
+tokencommander account balance
 ```
 
 #### Deploy contract
 
 ```bash
 # Deploy NEP6 Token 'MyToken'
-TokenCommander deploy --name MyToken --symbol MT --total 100000000 --decimals 1
+tokencommander deploy --name MyToken --symbol MT --total 100000000 --decimals 1
 
 # Deploy NEP6 Token 'MyToken' in short
-TokenCommander deploy -n MyToken -s MT -t 100000000 -d 1
+tokencommander deploy -n MyToken -s MT -t 100000000 -d 1
 
 # Deploy NEP6 Token 'MyToken' with decimal total supply
-TokenCommander deploy -n MyToken -s MT -t 0.1 -d 8
+tokencommander deploy -n MyToken -s MT -t 0.1 -d 8
 
 # Deploy NEP7 Token 'MyToken'
-TokenCommander deploy --name MyToken --symbol MT --mode NEP7
+tokencommander deploy --name MyToken --symbol MT --mode NEP7
 ```
 
 #### Get basic information
 
 ```bash
 # Get basic information
-TokenCommander info
+tokencommander info
 
 # Get basic information of contract address
-TokenCommander info -a 0xdAC17F958D2ee523a2206206994597C13D831ec7
+tokencommander info -a 0xdAC17F958D2ee523a2206206994597C13D831ec7
 
 # Get basic information of contract local symbol
-TokenCommander info -s USDT
+tokencommander info -s USDT
 ```
 
 #### Get balance
 
 ```bash
 # Get balance of the default address
-TokenCommander balance
+tokencommander balance
 
 # Get balance of the some address
-TokenCommander balance 0xc8B5c4cB6DB7254d082b24A96627F143E8A80c31 0xeBF02C8C496C76079E2425D64d73030264BEA352
+tokencommander balance 0xc8B5c4cB6DB7254d082b24A96627F143E8A80c31 0xeBF02C8C496C76079E2425D64d73030264BEA352
 ```
 
 #### transaction
 
 ```bash
 # Pay 10 NEP6 token to other 
-TokenCommander pay 10 --to 0xc8B5c4cB6DB7254d082b24A96627F143E8A80c31
+tokencommander pay 10 --to 0xc8B5c4cB6DB7254d082b24A96627F143E8A80c31
 
 # Pay 0.01 NEP6 token to other 
-TokenCommander pay 0.01 --to 0xc8B5c4cB6DB7254d082b24A96627F143E8A80c31
+tokencommander pay 0.01 --to 0xc8B5c4cB6DB7254d082b24A96627F143E8A80c31
 
 # Transfer NEP7 tokenID 10 to other
-TokenCommander pay 10 --to 0xc8B5c4cB6DB7254d082b24A96627F143E8A80c31
+tokencommander pay 10 --to 0xc8B5c4cB6DB7254d082b24A96627F143E8A80c31
 ```
 
 #### Mint NEP7 Token
 
 ```bash
 # Mint token for address
-TokenCommander mint 0xc8B5c4cB6DB7254d082b24A96627F143E8A80c31
+tokencommander mint 0xc8B5c4cB6DB7254d082b24A96627F143E8A80c31
 
 # Mint tokenID 10 for address
-TokenCommander mint 0xc8B5c4cB6DB7254d082b24A96627F143E8A80c31 10
+tokencommander mint 0xc8B5c4cB6DB7254d082b24A96627F143E8A80c31 10
 ```
 
 
@@ -218,16 +217,16 @@ TokenCommander mint 0xc8B5c4cB6DB7254d082b24A96627F143E8A80c31 10
 
 ```bash
 # Add contract 0xdAC17F958D2ee523a2206206994597C13D831ec7 to local
-TokenCommander add 0xdAC17F958D2ee523a2206206994597C13D831ec7
+tokencommander add 0xdAC17F958D2ee523a2206206994597C13D831ec7
 
 # Add contract 0xdAC17F958D2ee523a2206206994597C13D831ec7 to local with custom symbol
-TokenCommander add 0xdAC17F958D2ee523a2206206994597C13D831ec7 USDT
+tokencommander add 0xdAC17F958D2ee523a2206206994597C13D831ec7 USDT
 ```
 
 #### Batch pay ERC20 token
 
 ```bash
 # batch pay base on batch.txt
-TokenCommander batch batch.txt
-TokenCommander batchpay batch.txt
+tokencommander batch batch.txt
+tokencommander batchpay batch.txt
 ```
