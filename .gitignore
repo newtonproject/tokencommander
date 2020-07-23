@@ -1,4 +1,4 @@
-wallet/*
+/wallet
 debug.test
 debug
 .idea/*

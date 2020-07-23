@@ -3,12 +3,12 @@
 
 `TokenCommander` project contains the following:
 * Deploy TokenCommander contract with custom token name, symbol, decimals or total supply amount
-* Support [NRC20|ERC20](https://github.com/ethereum/EIPs/blob/master/EIPS/eip-20.md) and [NRC721|ERC721](https://github.com/ethereum/EIPs/blob/master/EIPS/eip-721.md)
+* Support [NEP6](https://github.com/newtonproject/NEPs/blob/master/NEPS/nep-6.md)|[ERC20](https://github.com/ethereum/EIPs/blob/master/EIPS/eip-20.md) and [NEP7](https://github.com/newtonproject/NEPs/blob/master/NEPS/nep-7.md)|[ERC721](https://github.com/ethereum/EIPs/blob/master/EIPS/eip-721.md)
 * Get basic information of the contract
 * Get balance of the address on the token
 * Pay token to address
 * Decimal amount support for total supply or payment
-* Mint token for NRC721|ERC721
+* Mint token for NEP7|ERC721
 
 ## QuickStart
 
@@ -80,7 +80,7 @@ Available Commands:
   help        Help about any command
   info        Show contract basic info
   init        Initialize config file
-  mint        Command to mint tokenID for address, only for NRC721
+  mint        Command to mint tokenID for address, only for NEP7
   pay         Command about transaction
   version     Get version of TokenCommander CLI
 
@@ -89,7 +89,7 @@ Flags:
   -a, --contractAddress address    Contract address
   -f, --from address               the from address who pay gas
   -h, --help                       help for TokenCommander
-      --mode string                use NRC20|NRC721 token (default "NRC20")
+      --mode string                use NEP6|NEP7 token (default "NEP6")
   -i, --rpcURL url                 NewChain json rpc or ipc url (default "https://rpc1.newchain.newtonproject.org")
   -s, --symbol --contractAddress   the symbol of the contract, this'll overwrite the --contractAddress when load token
   -w, --walletPath directory       Wallet storage directory (default "./wallet/")
@@ -107,7 +107,7 @@ One available configuration file `config.toml` is as follows:
 ```conf
 contractaddress = "0x832c0e9Fa5fF7556E357212a42939d9c9D070bAA"
 from = "0xeBF02C8C496C76079E2425D64d73030264BEA352"
-mode = "NRC721"
+mode = "NEP7"
 rpcurl = "https://rpc1.newchain.newtonproject.org"
 walletpath = "./wallet/"
 password = "password"
@@ -154,17 +154,17 @@ TokenCommander account balance
 #### Deploy contract
 
 ```bash
-# Deploy NRC20 Token 'MyToken'
+# Deploy NEP6 Token 'MyToken'
 TokenCommander deploy --name MyToken --symbol MT --total 100000000 --decimals 1
 
-# Deploy NRC20 Token 'MyToken' in short
+# Deploy NEP6 Token 'MyToken' in short
 TokenCommander deploy -n MyToken -s MT -t 100000000 -d 1
 
-# Deploy NRC20 Token 'MyToken' with decimal total supply
+# Deploy NEP6 Token 'MyToken' with decimal total supply
 TokenCommander deploy -n MyToken -s MT -t 0.1 -d 8
 
-# Deploy NRC721 Token 'MyToken'
-TokenCommander deploy --name MyToken --symbol MT --mode NRC721
+# Deploy NEP7 Token 'MyToken'
+TokenCommander deploy --name MyToken --symbol MT --mode NEP7
 ```
 
 #### Get basic information
@@ -193,17 +193,17 @@ TokenCommander balance 0xc8B5c4cB6DB7254d082b24A96627F143E8A80c31 0xeBF02C8C496C
 #### transaction
 
 ```bash
-# Pay 10 NRC20 token to other 
+# Pay 10 NEP6 token to other 
 TokenCommander pay 10 --to 0xc8B5c4cB6DB7254d082b24A96627F143E8A80c31
 
-# Pay 0.01 NRC20 token to other 
+# Pay 0.01 NEP6 token to other 
 TokenCommander pay 0.01 --to 0xc8B5c4cB6DB7254d082b24A96627F143E8A80c31
 
-# Transfer NRC721 tokenID 10 to other
+# Transfer NEP7 tokenID 10 to other
 TokenCommander pay 10 --to 0xc8B5c4cB6DB7254d082b24A96627F143E8A80c31
 ```
 
-#### Mint NRC721 Token
+#### Mint NEP7 Token
 
 ```bash
 # Mint token for address
