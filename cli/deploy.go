@@ -11,8 +11,8 @@ import (
 
 func (cli *CLI) buildDeployCmd() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "deploy <--name tokenname> <--symbol tokensymbol> <--total totalSupplyAmount> [--decimals decimal]",
-		Short: fmt.Sprintf("Deploy %s contract", cli.blockchain.String()),
+		Use:                   "deploy <--name tokenname> <--symbol tokensymbol> <--total totalSupplyAmount> [--decimals decimal]",
+		Short:                 fmt.Sprintf("Deploy %s contract", cli.blockchain.String()),
 		DisableFlagsInUseLine: true,
 		Run: func(cmd *cobra.Command, args []string) {
 

@@ -7,7 +7,7 @@ require (
 	github.com/aristanetworks/goarista v0.0.0-20200609010056-95bcf8053598 // indirect
 	github.com/btcsuite/btcutil v1.0.2
 	github.com/deckarep/golang-set v1.7.1 // indirect
-	github.com/ethereum/go-ethereum v1.8.26
+	github.com/ethereum/go-ethereum v1.9.18
 	github.com/fatih/color v1.9.0 // indirect
 	github.com/golang/protobuf v1.4.2 // indirect
 	github.com/karalabe/hid v1.0.0 // indirect
@@ -19,11 +19,10 @@ require (
 	github.com/rs/cors v1.7.0 // indirect
 	github.com/spf13/cobra v1.0.0
 	github.com/spf13/viper v1.7.0
-	github.com/syndtr/goleveldb v1.0.0 // indirect
 	golang.org/x/crypto v0.0.0-20200709230013-948cd5f35899 // indirect
 	golang.org/x/net v0.0.0-20200707034311-ab3426394381 // indirect
 	gopkg.in/natefinch/npipe.v2 v2.0.0-20160621034901-c1b8fa8bdcce // indirect
 	gopkg.in/sourcemap.v1 v1.0.5 // indirect
 )
 
-replace github.com/ethereum/go-ethereum => github.com/newtonproject/newchain v1.8.26-newton-1.1
+replace github.com/ethereum/go-ethereum => github.com/newtonproject/newchain v1.9.18-newton

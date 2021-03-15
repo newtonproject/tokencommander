@@ -13,7 +13,7 @@ import (
 
 	"github.com/btcsuite/btcutil/base58"
 	"github.com/ethereum/go-ethereum/common"
-	"github.com/ethereum/go-ethereum/console"
+	prompt2 "github.com/ethereum/go-ethereum/console/prompt"
 )
 
 // IsDecimalString Check whether amount string is legal amount
@@ -30,12 +30,12 @@ func getPassPhrase(prompt string, confirmation bool) (string, error) {
 	if prompt != "" {
 		fmt.Println(prompt)
 	}
-	password, err := console.Stdin.PromptPassword("Enter passphrase (empty for no passphrase): ")
+	password, err := prompt2.Stdin.PromptPassword("Enter passphrase (empty for no passphrase): ")
 	if err != nil {
 		return "", err
 	}
 	if confirmation {
-		confirm, err := console.Stdin.PromptPassword("Enter same passphrase again: ")
+		confirm, err := prompt2.Stdin.PromptPassword("Enter same passphrase again: ")
 		if err != nil {
 			return "", err
 		}

@@ -14,10 +14,10 @@ import (
 	"github.com/ethereum/go-ethereum/accounts/keystore"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/ethclient"
-	"github.com/spf13/cobra"
-	"github.com/spf13/viper"
 	"github.com/newtonproject/tokencommander/contract/ERC20"
 	"github.com/newtonproject/tokencommander/contract/ERC721"
+	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
 )
 
 var (

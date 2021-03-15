@@ -11,9 +11,9 @@ import (
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/core/types"
-	"github.com/spf13/viper"
 	"github.com/newtonproject/tokencommander/contract/ERC20"
 	"github.com/newtonproject/tokencommander/contract/ERC721"
+	"github.com/spf13/viper"
 )
 
 // Deploy deploy contract
