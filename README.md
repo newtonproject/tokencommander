@@ -60,6 +60,17 @@ Use commands `go generate` or `abigen` to generate SimpleToken.go from [SimpleTo
 abigen --sol contract/SimpleToken.sol --pkg cli --out cli/SimpleToken.go
 ```
 
+- NRC6|ERC20
+    - Token name: SimpleToken
+    - Compiler Version: v0.5.0
+    - Optimization: enable with 200
+    - others: default
+- NRC7|ERC721
+    - Token name: SimpleToken
+    - Compiler Version: v0.4.24
+    - Optimization: enable with 200
+    - others: default
+
 ### commandline client
 
 #### Help
