@@ -16,7 +16,7 @@ import (
 
 func (cli *CLI) buildMintCmd() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:                   "mint <address> [tokenID] [--url <tokenUrl>]",
+		Use:                   "mint <address> [tokenID] [--uri <tokenUri>]",
 		Short:                 fmt.Sprintf("Command to mint tokenID for address, only for %s", ModeERC721),
 		Args:                  cobra.MinimumNArgs(1),
 		DisableFlagsInUseLine: true,
@@ -82,9 +82,9 @@ func (cli *CLI) buildMintCmd() *cobra.Command {
 				return
 			}
 
-			var tokenUrl string
-			if cmd.Flags().Changed("url") {
-				tokenUrl, err = cmd.Flags().GetString("url")
+			var tokenUri string
+			if cmd.Flags().Changed("uri") {
+				tokenUri, err = cmd.Flags().GetString("uri")
 				if err != nil {
 					fmt.Println("Get token url error: ", err)
 					return
@@ -101,14 +101,14 @@ func (cli *CLI) buildMintCmd() *cobra.Command {
 			opts.Context = ctx
 
 			var tx *types.Transaction
-			if tokenUrl == "" {
+			if tokenUri == "" {
 				tx, err = erc721Token.Mint(opts, toAddress, tokenID)
 				if err != nil {
 					fmt.Printf("Error: mint error(%s)\n", err)
 					return
 				}
 			} else {
-				tx, err = erc721Token.MintWithTokenURI(opts, toAddress, tokenID, tokenUrl)
+				tx, err = erc721Token.MintWithTokenURI(opts, toAddress, tokenID, tokenUri)
 				if err != nil {
 					fmt.Printf("Error: mint error(%s)\n", err)
 					return
@@ -127,7 +127,7 @@ func (cli *CLI) buildMintCmd() *cobra.Command {
 		},
 	}
 
-	cmd.Flags().String("url", "", "mint with token url")
+	cmd.Flags().String("uri", "", "mint with token uri")
 
 	return cmd
 }
