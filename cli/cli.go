@@ -55,7 +55,7 @@ func NewCLI() *CLI {
 		fmt.Println(err)
 		return nil
 	}
-	version := "v0.5.2"
+	version := "v0.5.3"
 	if buildCommit != "" {
 		version = fmt.Sprintf("%s-%s", version, buildCommit)
 	}
