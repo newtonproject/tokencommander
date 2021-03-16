@@ -19,6 +19,7 @@ func (cli *CLI) buildMintCmd() *cobra.Command {
 		Use:                   "mint <address> [tokenID] [--uri <tokenUri>]",
 		Short:                 fmt.Sprintf("Command to mint tokenID for address, only for %s", ModeERC721),
 		Args:                  cobra.MinimumNArgs(1),
+		Aliases:               []string{"mine"},
 		DisableFlagsInUseLine: true,
 		Run: func(cmd *cobra.Command, args []string) {
 
