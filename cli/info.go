@@ -99,19 +99,22 @@ func (cli *CLI) buildInfoCmd() *cobra.Command {
 					} else {
 						fmt.Printf("\tTokenURI: %s\n", uri)
 
-						// try to get metadata
-						raw, err := getJson(uri)
-						if err != nil {
-							// fmt.Println("\tMetadata: get metadata error", err) // ignore
-						} else {
-							rawStr, err := json.MarshalIndent(raw, "", "\t")
+						metadata, _ := cmd.Flags().GetBool("metadata")
+						if metadata {
+							// try to get metadata
+							raw, err := getJson(uri)
 							if err != nil {
-								fmt.Println("\tMetadata: ", err)
+								// fmt.Println("\tMetadata: get metadata error", err) // ignore
 							} else {
-								fmt.Println("\tMetadata:", string(rawStr))
+								rawStr, err := json.MarshalIndent(raw, "", "\t")
+								if err != nil {
+									fmt.Println("\tMetadata: ", err)
+								} else {
+									fmt.Println("\tMetadata:", string(rawStr))
+								}
 							}
-
 						}
+
 					}
 
 				}
@@ -121,6 +124,8 @@ func (cli *CLI) buildInfoCmd() *cobra.Command {
 			return
 		},
 	}
+
+	cmd.Flags().Bool("metadata", false, "show metadata info for tokenID")
 
 	return cmd
 }
