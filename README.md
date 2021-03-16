@@ -223,7 +223,7 @@ tokencommander mint 0xc8B5c4cB6DB7254d082b24A96627F143E8A80c31
 tokencommander mint 0xc8B5c4cB6DB7254d082b24A96627F143E8A80c31 10
 
 # Mint tokenID 1 for address with tokenURL
-tokencommander mint 0xc8B5c4cB6DB7254d082b24A96627F143E8A80c31 10 --url https://www.newtonproject.org/tokencommander/token721/1.json
+tokencommander mint 0xc8B5c4cB6DB7254d082b24A96627F143E8A80c31 10 --uri https://www.newtonproject.org/tokencommander/hello.png
 ```
 
 
