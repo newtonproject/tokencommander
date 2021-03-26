@@ -9,8 +9,8 @@ import (
 	"net/http"
 	"strconv"
 
-	"github.com/newtonproject/tokencommander/contract/ERC20"
-	"github.com/newtonproject/tokencommander/contract/ERC721"
+	"github.com/newtonproject/tokencommander/contracts/ERC20"
+	"github.com/newtonproject/tokencommander/contracts/ERC721"
 	"github.com/spf13/cobra"
 )
 
@@ -44,7 +44,7 @@ func (cli *CLI) buildInfoCmd() *cobra.Command {
 			}
 
 			if cli.mode == ModeERC20 {
-				decimals, err := SimpleToken.(*ERC20.SimpleToken).Decimals(nil)
+				decimals, err := SimpleToken.(*ERC20.BaseToken).Decimals(nil)
 				if err != nil {
 					fmt.Printf("Decimals: Get decimals Error(%v)\n", err)
 				} else {
@@ -75,7 +75,7 @@ func (cli *CLI) buildInfoCmd() *cobra.Command {
 
 					idBig := big.NewInt(int64(id))
 
-					exists, err := SimpleToken.(*ERC721.SimpleToken).Exists(nil, idBig)
+					exists, err := SimpleToken.(*ERC721.NRC7Full).Exists(nil, idBig)
 					if err != nil {
 						fmt.Println("\tCheck token ID exists error: ", err)
 						return
@@ -86,14 +86,14 @@ func (cli *CLI) buildInfoCmd() *cobra.Command {
 					}
 
 					// owner
-					owner, err := SimpleToken.(*ERC721.SimpleToken).OwnerOf(nil, idBig)
+					owner, err := SimpleToken.(*ERC721.NRC7Full).OwnerOf(nil, idBig)
 					if err != nil {
 						fmt.Printf("\tOwner: Get owner error(%v)\n", err)
 					} else {
 						fmt.Printf("\tOwner: %s\n", owner.String())
 					}
 
-					uri, err := SimpleToken.(*ERC721.SimpleToken).TokenURI(nil, idBig)
+					uri, err := SimpleToken.(*ERC721.NRC7Full).TokenURI(nil, idBig)
 					if err != nil {
 						fmt.Printf("\tTokenURI: Get token uri error(%v)\n", err)
 					} else {

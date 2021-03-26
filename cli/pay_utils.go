@@ -9,8 +9,8 @@ import (
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/core/types"
-	"github.com/newtonproject/tokencommander/contract/ERC20"
-	"github.com/newtonproject/tokencommander/contract/ERC721"
+	"github.com/newtonproject/tokencommander/contracts/ERC20"
+	"github.com/newtonproject/tokencommander/contracts/ERC721"
 )
 
 // GasFail GasFail info from SuggestGasPrice
@@ -62,7 +62,7 @@ func (cli *CLI) pay(fromAddress, toAddress common.Address, amountStr string, now
 			fmt.Println("amount invalid: ", amountStr)
 			return
 		}
-		tokenOwner, err := simpleToken.(*ERC721.SimpleToken).OwnerOf(callOpts, tokenID)
+		tokenOwner, err := simpleToken.(*ERC721.NRC7Full).OwnerOf(callOpts, tokenID)
 		if err != nil {
 			fmt.Printf("OwnerOf: OwnerOf Error(%v)\n", err)
 			return
@@ -73,7 +73,7 @@ func (cli *CLI) pay(fromAddress, toAddress common.Address, amountStr string, now
 
 		fmt.Printf("Try to transfer tokenID %s to %s from %s ...\n",
 			tokenID, toAddress.String(), fromAddress.String())
-		tx, err = simpleToken.(*ERC721.SimpleToken).TransferFrom(opts, fromAddress, toAddress, tokenID)
+		tx, err = simpleToken.(*ERC721.NRC7Full).TransferFrom(opts, fromAddress, toAddress, tokenID)
 		if err != nil {
 			if GasFail == err.Error() {
 				fmt.Println("SubmitTransaction error: ", TxFailAlways)
@@ -86,7 +86,7 @@ func (cli *CLI) pay(fromAddress, toAddress common.Address, amountStr string, now
 		fmt.Printf("Succeed transfer tokenID %s to %s from %s, TxID %s.\n", tokenID, toAddress.String(), fromAddress.String(), tx.Hash().String())
 
 	} else {
-		decimals, err := simpleToken.(*ERC20.SimpleToken).Decimals(callOpts)
+		decimals, err := simpleToken.(*ERC20.BaseToken).Decimals(callOpts)
 		if err != nil {
 			fmt.Printf("Decimals: Get decimals Error(%v)\n", err)
 			return
@@ -122,7 +122,7 @@ func (cli *CLI) pay(fromAddress, toAddress common.Address, amountStr string, now
 		fmt.Printf("Try to pay %s %s to %s from %s ...\n",
 			getAmountTextByWeiWithDecimals(amount, decimals),
 			symbol, toAddress.String(), fromAddress.String())
-		tx, err = simpleToken.(*ERC20.SimpleToken).Transfer(opts, toAddress, amount)
+		tx, err = simpleToken.(*ERC20.BaseToken).Transfer(opts, toAddress, amount)
 		if err != nil {
 			if GasFail == err.Error() {
 				fmt.Println("SubmitTransaction error: ", TxFailAlways)

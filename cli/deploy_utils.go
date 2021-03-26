@@ -1,5 +1,4 @@
-//go:generate abigen --sol contract/ERC20/SimpleToken.sol --pkg ERC20 --out contract/ERC20/SimpleToken.go
-//go:generate abigen --sol contract/ERC721/SimpleToken.sol --pkg ERC721 --out contract/ERC721/SimpleToken.go
+//go:generate abigen --sol contracts/contracts/contracts/NRC20/BaseToken.sol --pkg ERC20 --out contracts/ERC20/SimpleToken.go
 package cli
 
 import (
@@ -11,13 +10,13 @@ import (
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/core/types"
-	"github.com/newtonproject/tokencommander/contract/ERC20"
-	"github.com/newtonproject/tokencommander/contract/ERC721"
+	"github.com/newtonproject/tokencommander/contracts/ERC20"
+	"github.com/newtonproject/tokencommander/contracts/ERC721"
 	"github.com/spf13/viper"
 )
 
 // Deploy deploy contract
-func (cli *CLI) Deploy(address, name, symbol string, decimals uint8, totalSupply *big.Int) {
+func (cli *CLI) Deploy(address, name, symbol, baseTokenURI string, decimals uint8, totalSupply *big.Int) {
 	var err error
 
 	opts, err := cli.getTransactOpts(address)
@@ -35,16 +34,17 @@ func (cli *CLI) Deploy(address, name, symbol string, decimals uint8, totalSupply
 	var contractAddress common.Address
 	tx := new(types.Transaction)
 	if cli.mode == ModeERC721 {
-		contractAddress, tx, _, err = ERC721.DeploySimpleToken(opts, client, name, symbol)
+		contractAddress, tx, _, err = ERC721.DeployNRC7Full(opts, client, name, symbol, baseTokenURI)
 	} else {
-		contractAddress, tx, _, err = ERC20.DeploySimpleToken(opts, client, name, symbol, decimals, totalSupply)
+		contractAddress, tx, _, err = ERC20.DeployBaseToken(opts, client, name, symbol, decimals,
+			totalSupply, totalSupply, true, true)
 	}
 	if err != nil {
 		fmt.Println("DeployContract error: ", err)
 		return
 	}
 
-	fmt.Printf("Contract deploy at address %s\n", contractAddress.String())
+	fmt.Printf("Contract %s deploy at address %s\n", cli.mode, contractAddress.String())
 	fmt.Printf("Transaction waiting to be mined: 0x%x\n", tx.Hash())
 	cli.contractAddress = contractAddress.String()
 	viper.Set("contractaddress", cli.contractAddress)
@@ -54,5 +54,5 @@ func (cli *CLI) Deploy(address, name, symbol string, decimals uint8, totalSupply
 		return
 	}
 
-	fmt.Println("Contract deploy success")
+	fmt.Printf("Contract %s deploy success\n", cli.mode)
 }

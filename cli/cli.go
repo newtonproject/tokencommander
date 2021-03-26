@@ -14,8 +14,8 @@ import (
 	"github.com/ethereum/go-ethereum/accounts/keystore"
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/ethereum/go-ethereum/ethclient"
-	"github.com/newtonproject/tokencommander/contract/ERC20"
-	"github.com/newtonproject/tokencommander/contract/ERC721"
+	"github.com/newtonproject/tokencommander/contracts/ERC20"
+	"github.com/newtonproject/tokencommander/contracts/ERC721"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
@@ -55,7 +55,7 @@ func NewCLI() *CLI {
 		fmt.Println(err)
 		return nil
 	}
-	version := "v0.5.3"
+	version := "v0.5.0"
 	if buildCommit != "" {
 		version = fmt.Sprintf("%s-%s", version, buildCommit)
 	}
@@ -123,9 +123,9 @@ func (cli *CLI) buildSimpleToken() (SimpleToken, error) {
 	}
 
 	if cli.mode == ModeERC721 {
-		cli.SimpleToken, err = ERC721.NewSimpleToken(common.HexToAddress(cli.contractAddress), cli.client)
+		cli.SimpleToken, err = ERC721.NewNRC7Full(common.HexToAddress(cli.contractAddress), cli.client)
 	} else {
-		cli.SimpleToken, err = ERC20.NewSimpleToken(common.HexToAddress(cli.contractAddress), cli.client)
+		cli.SimpleToken, err = ERC20.NewBaseToken(common.HexToAddress(cli.contractAddress), cli.client)
 	}
 	if err != nil {
 		return nil, fmt.Errorf("NewSimpleToken Error(%v)", err)

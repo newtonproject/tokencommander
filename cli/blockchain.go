@@ -116,8 +116,8 @@ var (
 
 func InitERC(bc BlockChain) {
 	if bc == NewChain {
-		ModeERC20 = "NEP6"
-		ModeERC721 = "NEP7"
+		ModeERC20 = "NRC6"
+		ModeERC721 = "NRC7"
 	}
 
 	ModeERCList = []string{ModeERC20, ModeERC721}

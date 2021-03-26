@@ -3,12 +3,12 @@
 
 `TokenCommander` project contains the following:
 * Deploy TokenCommander contract with custom token name, symbol, decimals or total supply amount
-* Support [NEP6](https://github.com/newtonproject/NEPs/blob/master/NEPS/nep-6.md)|[ERC20](https://github.com/ethereum/EIPs/blob/master/EIPS/eip-20.md) and [NEP7](https://github.com/newtonproject/NEPs/blob/master/NEPS/nep-7.md)|[ERC721](https://github.com/ethereum/EIPs/blob/master/EIPS/eip-721.md)
+* Support [NRC6](https://github.com/newtonproject/NEPs/blob/master/NEPS/nep-6.md)|[ERC20](https://github.com/ethereum/EIPs/blob/master/EIPS/eip-20.md) and [NRC7](https://github.com/newtonproject/NEPs/blob/master/NEPS/nep-7.md)|[ERC721](https://github.com/ethereum/EIPs/blob/master/EIPS/eip-721.md)
 * Get basic information of the contract
 * Get balance of the address on the token
 * Pay token to address
 * Decimal amount support for total supply or payment
-* Mint token for NEP7|ERC721
+* Mint token for NRC7|ERC721
 
 ## QuickStart
 
@@ -54,20 +54,32 @@ $GOPATH/bin/tokencommander
 
 ### contract
 
-Use commands `go generate` or `abigen` to generate SimpleToken.go from [SimpleToken.sol](https://github.com/OpenZeppelin/openzeppelin-solidity/blob/master/contracts/token/ERC20/BasicToken.sol).
+Use commands `solc` and `abigen` to generate SimpleToken.go from [Newton Contracts](https://github.com/newtonproject/contracts).
 
-```bash
-abigen --sol contract/SimpleToken.sol --pkg cli --out cli/SimpleToken.go
+- BaseToken generate
+
+```
+solc-static-linux-v0.8.0 --abi --bin -o contracts/ERC20/build --allow-paths . contracts/contracts/contracts/NRC6/BaseToken.sol --optimize
+abigen --abi contracts/ERC20/build/BaseToken.abi --bin contracts/ERC20/build/BaseToken.bin --pkg ERC20 --out contracts/ERC20/BaseToken.go --type BaseToken
+```
+
+- NRC7Full generate
+
+```
+solc-static-linux-v0.8.0 --abi --bin -o contracts/ERC721/build   --allow-paths . contracts/contracts/contracts/NRC7/NRC7Full.sol --optimize
+abigen --abi contracts/ERC721/build/NRC7Full.abi --bin contracts/ERC721/build/NRC7Full.bin --pkg ERC721 --out contracts/ERC721/NRC7Full.go --type NRC7Full
 ```
 
 - NRC6|ERC20
-    - Token name: SimpleToken
-    - Compiler Version: v0.5.0
+    - Token name: BaseToken
+    - Solidity Version: 0.8.0+commit.c7dfd78e.Linux.g++
+    - abigen: abigen version 1.10.1-stable-0f9b9ae5
     - Optimization: enable with 200
     - others: default
 - NRC7|ERC721
-    - Token name: SimpleToken
-    - Compiler Version: v0.4.24
+    - Token name: NRC7Full
+    - Solidity Compiler Version: 0.8.0+commit.c7dfd78e.Linux.g++
+    - abigen: abigen version 1.10.1-stable-0f9b9ae5
     - Optimization: enable with 200
     - others: default
 
@@ -90,7 +102,7 @@ Available Commands:
   help        Help about any command
   info        Show contract basic info
   init        Initialize config file
-  mint        Command to mint tokenID for address, only for NEP7
+  mint        Command to mint tokenID for address, only for NRC7
   pay         Command about transaction
   version     Get version of TokenCommander CLI
 
@@ -99,7 +111,7 @@ Flags:
   -a, --contractAddress address    Contract address
   -f, --from address               the from address who pay gas
   -h, --help                       help for TokenCommander
-      --mode string                use NEP6|NEP7 token (default "NEP6")
+      --mode string                use NRC6|NRC7 token (default "NRC6")
   -i, --rpcURL url                 NewChain json rpc or ipc url (default "https://rpc1.newchain.newtonproject.org")
   -s, --symbol --contractAddress   the symbol of the contract, this'll overwrite the --contractAddress when load token
   -w, --walletPath directory       Wallet storage directory (default "./wallet/")
@@ -117,7 +129,7 @@ One available configuration file `config.toml` is as follows:
 ```conf
 contractaddress = "0x832c0e9Fa5fF7556E357212a42939d9c9D070bAA"
 from = "0xeBF02C8C496C76079E2425D64d73030264BEA352"
-mode = "NEP7"
+mode = "NRC7"
 rpcurl = "https://rpc1.newchain.newtonproject.org"
 walletpath = "./wallet/"
 password = "password"
@@ -164,17 +176,17 @@ tokencommander account balance
 #### Deploy contract
 
 ```bash
-# Deploy NEP6 Token 'MyToken'
+# Deploy NRC6 Token 'MyToken'
 tokencommander deploy --name MyToken --symbol MT --total 100000000 --decimals 1
 
-# Deploy NEP6 Token 'MyToken' in short
+# Deploy NRC6 Token 'MyToken' in short
 tokencommander deploy -n MyToken -s MT -t 100000000 -d 1
 
-# Deploy NEP6 Token 'MyToken' with decimal total supply
+# Deploy NRC6 Token 'MyToken' with decimal total supply
 tokencommander deploy -n MyToken -s MT -t 0.1 -d 8
 
-# Deploy NEP7 Token 'MyToken'
-tokencommander deploy --name MyToken --symbol MT --mode NEP7
+# Deploy NRC7 Token 'MyToken'
+tokencommander deploy --name MyToken --symbol MT --mode NRC7
 ```
 
 #### Get basic information
@@ -188,9 +200,6 @@ tokencommander info -a 0xdAC17F958D2ee523a2206206994597C13D831ec7
 
 # Get basic information of contract local symbol
 tokencommander info -s USDT
-
-# Get basic information of ERC721 token by id
-tokencommander info 1024
 ```
 
 #### Get balance
@@ -206,17 +215,17 @@ tokencommander balance 0xc8B5c4cB6DB7254d082b24A96627F143E8A80c31 0xeBF02C8C496C
 #### transaction
 
 ```bash
-# Pay 10 NEP6 token to other 
+# Pay 10 NRC6 token to other 
 tokencommander pay 10 --to 0xc8B5c4cB6DB7254d082b24A96627F143E8A80c31
 
-# Pay 0.01 NEP6 token to other 
+# Pay 0.01 NRC6 token to other 
 tokencommander pay 0.01 --to 0xc8B5c4cB6DB7254d082b24A96627F143E8A80c31
 
-# Transfer NEP7 tokenID 10 to other
+# Transfer NRC7 tokenID 10 to other
 tokencommander pay 10 --to 0xc8B5c4cB6DB7254d082b24A96627F143E8A80c31
 ```
 
-#### Mint NEP7 Token
+#### Mint NRC7 Token
 
 ```bash
 # Mint token for address
@@ -226,7 +235,7 @@ tokencommander mint 0xc8B5c4cB6DB7254d082b24A96627F143E8A80c31
 tokencommander mint 0xc8B5c4cB6DB7254d082b24A96627F143E8A80c31 10
 
 # Mint tokenID 1 for address with tokenURL
-tokencommander mint 0xc8B5c4cB6DB7254d082b24A96627F143E8A80c31 10 --uri https://www.newtonproject.org/tokencommander/hello.png
+tokencommander mint 0xc8B5c4cB6DB7254d082b24A96627F143E8A80c31 10 --url https://www.newtonproject.org/tokencommander/token721/1.json
 ```
 
 

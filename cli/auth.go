@@ -54,9 +54,9 @@ func NewKeyedTransactor(key *ecdsa.PrivateKey, networkID *big.Int) *bind.Transac
 	keyAddr := crypto.PubkeyToAddress(key.PublicKey)
 	return &bind.TransactOpts{
 		From: keyAddr,
-		Signer: func(signer types.Signer, address common.Address, tx *types.Transaction) (*types.Transaction, error) {
+		Signer: func(address common.Address, tx *types.Transaction) (*types.Transaction, error) {
 			// force use ChainID
-			signer = types.NewEIP155Signer(networkID)
+			signer := types.NewEIP155Signer(networkID)
 			if address != keyAddr {
 				return nil, errors.New("not authorized to sign this account")
 			}
@@ -72,7 +72,7 @@ func NewKeyedTransactor(key *ecdsa.PrivateKey, networkID *big.Int) *bind.Transac
 func NewKeyedTransactorByAccount(wallet *keystore.KeyStore, account accounts.Account, passphrase string, networkID *big.Int) *bind.TransactOpts {
 	return &bind.TransactOpts{
 		From: account.Address,
-		Signer: func(signer types.Signer, address common.Address, tx *types.Transaction) (*types.Transaction, error) {
+		Signer: func(address common.Address, tx *types.Transaction) (*types.Transaction, error) {
 			fmt.Println("The tx is as follow: ")
 			fmt.Println("\tFrom:", account.Address.String())
 			if tx.To() == nil {
@@ -83,7 +83,7 @@ func NewKeyedTransactorByAccount(wallet *keystore.KeyStore, account accounts.Acc
 			fmt.Println("\tValue:", getWeiAmountTextByUnit(tx.Value(), UnitETH))
 			fmt.Println("\tData:", hex.EncodeToString(tx.Data()))
 			fmt.Println("\tNonce:", tx.Nonce())
-			fmt.Println("\tGasPrice:",getWeiAmountTextByUnit(tx.GasPrice(), UnitETH))
+			fmt.Println("\tGasPrice:", getWeiAmountTextByUnit(tx.GasPrice(), UnitETH))
 			fmt.Println("\tGasLimit:", tx.Gas())
 			fmt.Println("\tGasFee:", getWeiAmountTextByUnit(big.NewInt(0).Mul(tx.GasPrice(), big.NewInt(0).SetUint64(tx.Gas())), UnitETH))
 
@@ -100,17 +100,15 @@ func NewKeyedTransactorByAccount(wallet *keystore.KeyStore, account accounts.Acc
 				passphrase, _ = getPassPhrase(prompt, false)
 			}
 
-
 			return wallet.SignTx(account, tx, networkID)
 		},
 	}
 }
 
-
 func NewBatchKeyedTransactorByAccount(wallet *keystore.KeyStore, account accounts.Account, networkID *big.Int) *bind.TransactOpts {
 	return &bind.TransactOpts{
 		From: account.Address,
-		Signer: func(signer types.Signer, address common.Address, tx *types.Transaction) (*types.Transaction, error) {
+		Signer: func(address common.Address, tx *types.Transaction) (*types.Transaction, error) {
 			return wallet.SignTx(account, tx, networkID)
 		},
 	}

@@ -5,8 +5,8 @@ import (
 	"math/big"
 
 	"github.com/ethereum/go-ethereum/common"
-	"github.com/newtonproject/tokencommander/contract/ERC20"
-	"github.com/newtonproject/tokencommander/contract/ERC721"
+	"github.com/newtonproject/tokencommander/contracts/ERC20"
+	"github.com/newtonproject/tokencommander/contracts/ERC721"
 )
 
 func (cli *CLI) balanceOf(address common.Address) *big.Int {
@@ -38,7 +38,7 @@ func (cli *CLI) balanceOfText(address common.Address) string {
 	if cli.mode == ModeERC721 {
 		return balance.String()
 	}
-	decimals, err := simpleToken.(*ERC20.SimpleToken).Decimals(nil)
+	decimals, err := simpleToken.(*ERC20.BaseToken).Decimals(nil)
 	if err != nil {
 		return fmt.Sprintf("Decimals: Get Decimals Error(%v)\n", err)
 	}
@@ -58,9 +58,18 @@ func (cli *CLI) getTokensOfOwner(address common.Address) []*big.Int {
 	if err != nil {
 		return nil // fmt.Sprintf("GetSimpleToken Error(%v)", err)
 	}
-	tokens, err := simpleToken.(*ERC721.SimpleToken).TokensOfOwner(nil, address)
+
+	lenBig, err := simpleToken.(*ERC721.NRC7Full).BalanceOf(nil, address)
 	if err != nil {
-		return nil // fmt.Sprintf("Decimals: Get Decimals Error(%v)\n", err)
+		return nil
+	}
+	tokens := make([]*big.Int, lenBig.Uint64())
+	for i := uint64(0); i < lenBig.Uint64(); i++ {
+		token, err := simpleToken.(*ERC721.NRC7Full).TokenOfOwnerByIndex(nil, address, big.NewInt(0).SetUint64(i))
+		if err != nil {
+			return nil // fmt.Sprintf("Decimals: Get Decimals Error(%v)\n", err)
+		}
+		tokens[i] = big.NewInt(0).Set(token)
 	}
 
 	return tokens

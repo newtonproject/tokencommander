@@ -1,6 +1,7 @@
 package cli
 
 import (
+	"fmt"
 	"os"
 
 	"github.com/ethereum/go-ethereum/common"
@@ -76,7 +77,10 @@ func setupConfig(cli *CLI) error {
 	if address := viper.GetString("from"); address != "" && common.IsHexAddress(address) {
 		cli.address = address
 	}
-	if mode := viper.GetString("mode"); mode == ModeERC20 || mode == ModeERC721 {
+	if mode := viper.GetString("mode"); mode != "" {
+		if mode != ModeERC20 && mode != ModeERC721 {
+			return fmt.Errorf("not support mode %s, only support %s|%s", mode, ModeERC20, ModeERC721)
+		}
 		cli.mode = mode
 	}
 

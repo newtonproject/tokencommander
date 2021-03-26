@@ -41,6 +41,7 @@ func (cli *CLI) buildDeployCmd() *cobra.Command {
 
 			var decimals uint8
 			var totalSupply *big.Int
+			var baseTokenURI string
 			if cli.mode != ModeERC721 {
 				decimals, _ = cmd.Flags().GetUint8("decimals")
 				if decimals < 0 || decimals > 18 {
@@ -50,6 +51,10 @@ func (cli *CLI) buildDeployCmd() *cobra.Command {
 				}
 
 				totalSupplyStr, _ := cmd.Flags().GetString("total")
+				if totalSupplyStr == "" {
+					fmt.Println("totalSupply not set")
+					return
+				}
 				if !IsDecimalString(totalSupplyStr) {
 					fmt.Printf("totalSupply(%v) illegal\n", totalSupplyStr)
 					return
@@ -61,12 +66,19 @@ func (cli *CLI) buildDeployCmd() *cobra.Command {
 					fmt.Println(cmd.UsageString())
 					return
 				}
+			} else {
+				var err error
+				baseTokenURI, err = cmd.Flags().GetString("base")
+				if err != nil {
+					fmt.Println(err)
+					return
+				}
 			}
 
 			if cli.contractAddress == "" {
 				save = true
 			}
-			cli.Deploy(fromAddress, name, symbol, decimals, totalSupply)
+			cli.Deploy(fromAddress, name, symbol, baseTokenURI, decimals, totalSupply)
 
 			if save {
 				viper.WriteConfigAs(cli.config)
@@ -77,6 +89,8 @@ func (cli *CLI) buildDeployCmd() *cobra.Command {
 	cmd.Flags().StringP("name", "n", "", "the name of the token")
 	cmd.Flags().Uint8P("decimals", "d", 18, "the decimals of the token, 0~18")
 	cmd.Flags().StringP("total", "t", "", "the total supply of the token")
+
+	cmd.Flags().StringP("base", "b", "", fmt.Sprintf("the base token URI for %s", ModeERC721))
 
 	cmd.Flags().Bool("save", false, "save contract address to config file")
 

@@ -11,8 +11,8 @@ import (
 	"github.com/ethereum/go-ethereum/accounts/abi/bind"
 	"github.com/ethereum/go-ethereum/accounts/keystore"
 	"github.com/ethereum/go-ethereum/common"
+	"github.com/newtonproject/tokencommander/contracts/ERC20"
 	"github.com/spf13/cobra"
-	"github.com/newtonproject/tokencommander/contract/ERC20"
 )
 
 func (cli *CLI) buildBatchPayCmd() *cobra.Command {
@@ -49,7 +49,7 @@ func (cli *CLI) buildBatchPayCmd() *cobra.Command {
 				fmt.Println("GetSimpleToken Error: ", err)
 				return
 			}
-			erc20, ok := simpleToken.(*ERC20.SimpleToken)
+			erc20, ok := simpleToken.(*ERC20.BaseToken)
 			if !ok {
 				fmt.Printf("Only support for %s\n", ModeERC20)
 				return
